@@ -1,0 +1,258 @@
+:root {
+  --bg-start: #c9d7fb;
+  --bg-end: #dfe6f7;
+  --card-bg: rgba(255, 255, 255, 0.08);
+  --card-border: rgba(255, 255, 255, 0.25);
+  --text-main: #111111;
+  --text-muted: #444444;
+  --input-bg: #f5f2ee;
+  --input-border: rgba(0, 0, 0, 0.05);
+  --line: rgba(0, 0, 0, 0.25);
+  --card-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
+  --button-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.25),
+    0 3px 8px rgba(0, 0, 0, 0.28);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  min-height: 100vh;
+  font-family: Arial, Helvetica, sans-serif;
+  background: linear-gradient(180deg, var(--bg-start) 0%, var(--bg-end) 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+body::before,
+body::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 2px solid rgba(255, 255, 255, 0.55);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+body::before {
+  width: 1200px;
+  height: 1200px;
+  bottom: -760px;
+}
+
+body::after {
+  width: 900px;
+  height: 900px;
+  bottom: -560px;
+  opacity: 0.7;
+}
+
+.page {
+  width: 100%;
+  padding: 32px 16px;
+  display: flex;
+  justify-content: center;
+  position: relative;
+  z-index: 1;
+}
+
+.auth-card {
+  width: 100%;
+  padding: 0.8;
+  max-width: 420px;
+  padding: 28px 32px 30px;
+  border-radius: 24px;
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  box-shadow: var(--card-shadow);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.card-icon {
+  width: 54px;
+  height: 54px;
+  border-radius: 14px;
+  background: #f1eee9;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  display: grid;
+  place-items: center;
+  margin-top: 6px;
+  margin-bottom: 18px;
+}
+
+.card-icon img {
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+}
+
+.title {
+  font-size: 24px;
+  line-height: 1.2;
+  font-weight: 800;
+  text-align: center;
+  color: var(--text-main);
+}
+
+.subtitle {
+  font-size: 14px;
+  color: var(--text-muted);
+  margin-top: 3px;
+  margin-bottom: 26px;
+  text-align: center;
+}
+
+.form {
+  width: 100%;
+}
+
+.field {
+  position: relative;
+  margin-bottom: 12px;
+}
+
+.field input {
+  width: 100%;
+  height: 38px;
+  border: 1px solid var(--input-border);
+  border-radius: 999px;
+  background: var(--input-bg);
+  outline: none;
+  padding: 0 42px 0 36px;
+  font-size: 12px;
+  color: #222;
+}
+
+.field input::placeholder {
+  color: #666;
+  font-size: 12px;
+}
+
+.left-icon,
+.right-icon {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.left-icon {
+  left: 12px;
+}
+
+.right-icon {
+  right: 12px;
+}
+
+.left-icon img,
+.right-icon img {
+  width: 15px;
+  height: 15px;
+  object-fit: contain;
+}
+
+.forgot-wrap {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  margin-top: -4px;
+  margin-bottom: 10px;
+}
+
+.forgot-wrap a {
+  font-size: 11px;
+  color: #333;
+  text-decoration: underline;
+}
+
+.submit-btn {
+  width: 100%;
+  height: 42px;
+  border: none;
+  border-radius: 999px;
+  background: linear-gradient(180deg, #444 0%, #151515 45%, #000 100%);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: var(--button-shadow);
+  margin-top: 4px;
+}
+
+.divider {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 30px 0 22px;
+  color: #444;
+  font-size: 11px;
+  justify-content: center;
+}
+
+.divider::before,
+.divider::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--line);
+}
+
+.socials {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 26px;
+}
+
+.social-btn {
+  width: 34px;
+  height: 34px;
+  border: none;
+  background: transparent;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+}
+
+.social-btn img {
+  width: 30px;
+  height: 30px;
+  object-fit: contain;
+}
+
+@media (max-width: 480px) {
+  .auth-card {
+    max-width: 100%;
+    padding: 24px 20px 26px;
+  }
+
+  .title {
+    font-size: 22px;
+  }
+
+  body::before {
+    width: 1000px;
+    height: 1000px;
+    bottom: -670px;
+  }
+
+  body::after {
+    width: 760px;
+    height: 760px;
+    bottom: -500px;
+  }
+}
