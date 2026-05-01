@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-Do List SQLite Ajax</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f6f8;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            width: 450px;
+            margin: 60px auto;
+            background-color: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        .input-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+
+        button {
+            padding: 10px 14px;
+            border: none;
+            border-radius: 6px;
+            background-color: #007bff;
+            color: white;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        li {
+            background-color: #f1f1f1;
+            margin-bottom: 10px;
+            padding: 10px;
+            border-radius: 6px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .delete-btn {
+            background-color: #dc3545;
+        }
+
+        .delete-btn:hover {
+            background-color: #a71d2a;
+        }
+
+        .empty-message {
+            text-align: center;
+            color: #777;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>To-Do List</h1>
+
+        <div class="input-group">
+            <input type="text" id="taskInput" placeholder="Masukkan kegiatan">
+            <button id="addButton">Add</button>
+        </div>
+
+        <ul id="taskList"></ul>
+    </div>
+
+    <script>
+        const taskInput = document.getElementById("taskInput");
+        const addButton = document.getElementById("addButton");
+        const taskList = document.getElementById("taskList");
+
+        async function loadTasks() {
+            try {
+                const response = await fetch("api.php?action=get");
+                const tasks = await response.json();
+
+                taskList.innerHTML = "";
+
+                if (tasks.length === 0) {
+                    const emptyMessage = document.createElement("p");
+                    emptyMessage.textContent = "Belum ada item to-do-list.";
+                    emptyMessage.className = "empty-message";
+                    taskList.appendChild(emptyMessage);
+                    return;
+                }
+
+                tasks.forEach(task => {
+                    const li = document.createElement("li");
+
+                    const taskText = document.createElement("span");
+                    taskText.textContent = task.task;
+
+                    const deleteButton = document.createElement("button");
+                    deleteButton.textContent = "Delete";
+                    deleteButton.className = "delete-btn";
+
+                    deleteButton.addEventListener("click", function () {
+                        deleteTask(task.id);
+                    });
+
+                    li.appendChild(taskText);
+                    li.appendChild(deleteButton);
+
+                    taskList.appendChild(li);
+                });
+
+            } catch (error) {
+                console.error("Error loading tasks:", error);
+            }
+        }
+
+        async function addTask() {
+            const task = taskInput.value.trim();
+
+            if (task === "") {
+                alert("Task tidak boleh kosong!");
+                return;
+            }
+
+            try {
+                const response = await fetch("api.php?action=add", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/x-www-form-urlencoded"
+                    },
+                    body: "task=" + encodeURIComponent(task)
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    taskInput.value = "";
+                    loadTasks();
+                } else {
+                    alert(data.error);
+                }
+
+            } catch (error) {
+                console.error("Error adding task:", error);
+            }
+        }
+
+        async function deleteTask(id) {
+            try {
+                const response = await fetch("api.php?action=delete", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/x-www-form-urlencoded"
+                    },
+                    body: "id=" + encodeURIComponent(id)
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    loadTasks();
+                } else {
+                    alert(data.error);
+                }
+
+            } catch (error) {
+                console.error("Error deleting task:", error);
+            }
+        }
+
+        addButton.addEventListener("click", addTask);
+
+        taskInput.addEventListener("keypress", function (event) {
+            if (event.key === "Enter") {
+                addTask();
+            }
+        });
+
+        loadTasks();
+    </script>
+
+</body>
+</html>
